@@ -128,7 +128,11 @@ def main(
 
         # Upload file
         logger.info(f"Starting upload of {file_path}")
-        success = uploader.upload_file(file_path, remote_name)
+        # Show progress bar unless in quiet mode or not in a terminal
+        show_progress = not quiet and sys.stdout.isatty()
+        success = uploader.upload_file(
+            file_path, remote_name, show_progress=show_progress
+        )
 
         if success:
             if not quiet:

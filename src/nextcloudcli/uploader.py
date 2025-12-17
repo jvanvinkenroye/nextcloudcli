@@ -1,11 +1,13 @@
 """Nextcloud file upload functionality using WebDAV API."""
 
 import logging
+from collections.abc import Generator
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 from urllib.parse import urljoin, urlparse
 
 import requests
+from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -86,12 +88,47 @@ class NextcloudUploader:
             base_url = base_url + "/"
         return urljoin(base_url, "public.php/webdav/")
 
-    def upload_file(self, file_path: Path, remote_name: Optional[str] = None) -> bool:
+    def _file_reader_with_progress(
+        self, file_path: Path, chunk_size: int = 8192
+    ) -> Generator[bytes, None, None]:
+        """Read file in chunks and display progress bar.
+
+        Args:
+            file_path: Path to the file to read
+            chunk_size: Size of chunks to read (default 8192 bytes)
+
+        Yields:
+            Chunks of file data
+        """
+        file_size = file_path.stat().st_size
+
+        with open(file_path, "rb") as f:
+            with tqdm(
+                total=file_size,
+                unit="B",
+                unit_scale=True,
+                unit_divisor=1024,
+                desc=file_path.name,
+            ) as pbar:
+                while True:
+                    chunk = f.read(chunk_size)
+                    if not chunk:
+                        break
+                    pbar.update(len(chunk))
+                    yield chunk
+
+    def upload_file(
+        self,
+        file_path: Path,
+        remote_name: Optional[str] = None,
+        show_progress: bool = False,
+    ) -> bool:
         """Upload a file to the Nextcloud share.
 
         Args:
             file_path: Path to the local file to upload
             remote_name: Optional remote filename (defaults to local filename)
+            show_progress: Show progress bar for upload (default False)
 
         Returns:
             True if upload was successful, False otherwise
@@ -111,15 +148,21 @@ class NextcloudUploader:
         logger.debug(f"Upload URL: {upload_url}")
 
         try:
-            # Read file content
-            with open(file_path, "rb") as f:
-                file_content = f.read()
+            # Prepare data for upload
+            data: Union[bytes, Generator[bytes, None, None]]
+            if show_progress:
+                # Use streaming upload with progress bar
+                data = self._file_reader_with_progress(file_path)
+            else:
+                # Read entire file for simple upload
+                with open(file_path, "rb") as f:
+                    data = f.read()
 
             # Upload using WebDAV PUT with Basic Auth
             # Username is the share token, password is the share password
             response = requests.put(
                 upload_url,
-                data=file_content,
+                data=data,
                 auth=(self.share_token, self.password),
                 headers={"Content-Type": "application/octet-stream"},
             )

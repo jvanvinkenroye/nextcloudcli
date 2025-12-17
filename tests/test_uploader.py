@@ -250,6 +250,24 @@ class TestUploadFile:
         assert result is True
         mock_put.assert_called_once()
 
+    def test_upload_with_progress_bar(
+        self,
+        sample_share_url: str,
+        temp_file: Path,
+        mock_successful_response,
+        mocker,
+    ) -> None:
+        """Test upload with progress bar enabled."""
+        uploader = NextcloudUploader(sample_share_url)
+
+        mock_put = mocker.patch("requests.put", return_value=mock_successful_response)
+
+        # Upload with progress bar enabled
+        result = uploader.upload_file(temp_file, show_progress=True)
+
+        assert result is True
+        mock_put.assert_called_once()
+
 
 class TestConnectionTest:
     """Test connection testing functionality."""
