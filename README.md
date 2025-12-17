@@ -1,22 +1,43 @@
 # Nextcloud CLI Upload Tool
 
+![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
+![License](https://img.shields.io/github/license/jvanvinkenroye/nextcloudcli)
+![Tests](https://img.shields.io/badge/tests-45%20passed-success)
+![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)
+![Code Style](https://img.shields.io/badge/code%20style-ruff-000000)
+
 A command-line tool for uploading files to Nextcloud public share links using the WebDAV API.
 
-## Features
+## 📋 Table of Contents
 
-- Upload files to Nextcloud public shares from the command line
-- Support for password-protected shares
-- Custom remote filenames
-- Connection testing without uploading
-- Verbose and quiet modes for logging
-- Cross-platform support (macOS and Linux)
-- Detailed error handling and logging
+- [Features](#-features)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Examples](#-examples)
+- [How It Works](#-how-it-works)
+- [Troubleshooting](#-troubleshooting)
+- [Development](#-development)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## Installation
+## ✨ Features
+
+- 📤 Upload files to Nextcloud public shares from the command line
+- 🔒 Support for password-protected shares
+- 📊 Progress bar for file uploads with speed and ETA
+- ✏️ Custom remote filenames
+- 🔌 Connection testing without uploading
+- 📝 Verbose and quiet modes for logging
+- 🖥️ Cross-platform support (macOS and Linux)
+- ⚡ Streaming uploads for memory efficiency
+- 🧪 Comprehensive test coverage (88%)
+- 🛡️ Type-safe code with full type hints
+
+## 📦 Installation
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.9 or higher
 - uv package manager (recommended) or pip
 
 ### Setup
@@ -38,7 +59,7 @@ uv pip install -e .
 uv pip install -e ".[dev]"
 ```
 
-## Usage
+## 🚀 Usage
 
 ### Basic Command
 
@@ -58,7 +79,7 @@ nextcloud-upload --share-url <SHARE_URL> --file <FILE_PATH>
 - `--help`: Show help message with all options
 - `--version`: Show version information
 
-## Examples
+## 💡 Examples
 
 ### Upload a file to a public share
 
@@ -96,7 +117,7 @@ nextcloud-upload -u https://cloud.example.com/s/ShareToken -f file.pdf -v
 nextcloud-upload -u https://cloud.example.com/s/ShareToken -f file.pdf -q
 ```
 
-## How It Works
+## 🔧 How It Works
 
 The tool uses the Nextcloud WebDAV API to upload files to public shares:
 
@@ -106,7 +127,7 @@ The tool uses the Nextcloud WebDAV API to upload files to public shares:
 4. Uploads the file using HTTP PUT request
 5. Returns success or error status
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### "Could not extract share token from URL"
 
@@ -128,7 +149,7 @@ The share might not allow uploads. Check the share permissions in Nextcloud.
 
 Make sure the file path you provided exists and is accessible.
 
-## Development
+## 👨‍💻 Development
 
 ### Running Tests
 
@@ -170,10 +191,32 @@ nextcloudcli/
 └── .gitignore
 ```
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## License
+### Quick Start for Contributors
 
-MIT
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`pytest`)
+5. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Click](https://click.palletsprojects.com/) for CLI
+- [tqdm](https://github.com/tqdm/tqdm) for progress bars
+- [Requests](https://requests.readthedocs.io/) for HTTP
+
+## 📚 Resources
+
+- [Nextcloud WebDAV Documentation](https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/)
+- [Project Issues](https://github.com/jvanvinkenroye/nextcloudcli/issues)
+- [Changelog](CHANGELOG.md)

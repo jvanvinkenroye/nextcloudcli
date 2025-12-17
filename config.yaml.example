@@ -1,0 +1,54 @@
+# Nextcloud CLI Configuration Example
+# Copy this file to config.yaml and customize for your needs
+# Note: Configuration file support is planned for a future release (see issue #6)
+
+# Default share to use when no URL is provided
+default_share: production
+
+# Named shares for quick access
+shares:
+  production:
+    url: https://cloud.example.com/nextcloud/s/ProductionToken
+    # Password can be omitted - will prompt when needed
+    # password: secret123
+
+  development:
+    url: https://cloud.example.com/nextcloud/s/DevToken
+    # Use environment variable for password
+    password_env: NEXTCLOUD_DEV_PASSWORD
+
+  backup:
+    url: https://backup.example.com/s/BackupToken
+    # Read password from file
+    password_file: ~/.secrets/nextcloud-backup
+
+# Global settings
+settings:
+  # SSL certificate verification
+  verify_ssl: true
+
+  # Request timeout in seconds
+  timeout: 30
+
+  # Chunk size for streaming uploads (bytes)
+  chunk_size: 8192
+
+  # Always show progress bar (overrides auto-detection)
+  show_progress: true
+
+  # Default logging level (DEBUG, INFO, WARNING, ERROR)
+  log_level: INFO
+
+# Usage examples (when configuration support is implemented):
+#
+# Use named share:
+#   nextcloud-upload --share production -f file.txt
+#
+# Use default share:
+#   nextcloud-upload -f file.txt
+#
+# List configured shares:
+#   nextcloud-upload --list-shares
+#
+# Add new share:
+#   nextcloud-upload --add-share myshare --url <URL>
