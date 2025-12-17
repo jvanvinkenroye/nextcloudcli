@@ -7,7 +7,6 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,9 +52,7 @@ class NextcloudUploader:
             logger.debug(f"Extracted share token: {token}")
             return token
         except (ValueError, IndexError):
-            raise ValueError(
-                f"Could not extract share token from URL: {share_url}"
-            )
+            raise ValueError(f"Could not extract share token from URL: {share_url}")
 
     def _get_base_url(self, share_url: str) -> str:
         """Get the base URL of the Nextcloud instance.
@@ -89,9 +86,7 @@ class NextcloudUploader:
             base_url = base_url + "/"
         return urljoin(base_url, "public.php/webdav/")
 
-    def upload_file(
-        self, file_path: Path, remote_name: Optional[str] = None
-    ) -> bool:
+    def upload_file(self, file_path: Path, remote_name: Optional[str] = None) -> bool:
         """Upload a file to the Nextcloud share.
 
         Args:
@@ -135,8 +130,7 @@ class NextcloudUploader:
                 return True
             else:
                 logger.error(
-                    f"Upload failed with status {response.status_code}: "
-                    f"{response.text}"
+                    f"Upload failed with status {response.status_code}: {response.text}"
                 )
                 return False
 
